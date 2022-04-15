@@ -5,6 +5,6 @@ Using web scraping tools to compile fragmented information dispersed online into
     Contains previous python3 scripts that were written and used to retrieve information as well as consolidate data into 
     a complete dataset. 
     
-## :zap: dataset-scraping-compilation/src/datasets 
+## :zap: dataset-scraping-compilation/datasets 
     Holds all of the compiled datasets created from web-scraping. Also available on Kaggle.com! 
   
