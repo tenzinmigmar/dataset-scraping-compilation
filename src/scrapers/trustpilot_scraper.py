@@ -32,24 +32,25 @@ class TrustPilotScraper:
         r = requests.get(TrustPilotScraper.__BASE_URL + self.__review_site + current_page)
         if r.status_code != 200:
             raise UnsuccessfulRequestError(f"A {r.status_code} was issued.")
-        self.__soup = BeautifulSoup(r.content, "html.parser")
+        soup = BeautifulSoup(r.content, "html.parser")
 
         self.data["Review Titles"].extend([review_title.get_text() for review_title
-        in self.__soup.find_all(attrs={"name": "review-title"})])
-        self.data["Review Dates"].extend([review_date.get_text() for review_date in self.__soup.find_all("time")])
+        in soup.find_all(attrs={"name": "review-title"})])
+        self.data["Review Dates"].extend([review_date.get_text() for review_date in soup.find_all("time")])
         for i, review_date in enumerate(self.data["Review Dates"]):
-            value = int(re.search(r'\d', review_date).group(0))
             if "hours" in review_date:
+                value = int(re.search(r'\d', review_date).group(0))
                 new_date = datetime.now() - timedelta(hours=value)
                 self.data["Review Dates"][i] = new_date.strftime("%B %d, %Y")
             elif "days" in review_date:
+                value = int(re.search(r'\d', review_date).group(0))
                 new_date = datetime.now() - timedelta(hours=24*value)
                 self.data["Review Dates"][i] = new_date.strftime("%B %d, %Y")
 
-        self.data["Reviews"].extend([review.get_text() for review in self.__soup.find_all("p",
+        self.data["Reviews"].extend([review.get_text() for review in soup.find_all("p",
         attrs={"data-service-review-text-typography": "true"})])
         self.data["Star Ratings"].extend([int(re.search(r'\d', star_rating.get('alt')).group(0))
-        for star_rating in self.__soup.find_all('img', alt=re.compile('Rated'))])
+        for star_rating in soup.find_all('img', alt=re.compile('Rated'))])
 
     def get_results(self):
         for i in range(self.page_number):
