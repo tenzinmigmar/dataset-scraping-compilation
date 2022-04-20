@@ -75,6 +75,6 @@ class TrustPilotScraper:
     def write_to_csv(self, file_name):
         keys = sorted(self.data.keys())
         with open(f"{file_name}.csv", "w") as f:
-            w = csv.w(f, delimiter=",")
+            w = csv.writer(f, delimiter=",")
             w.writerow(keys)
             w.writerows(zip(*[self.data[key] for key in keys]))

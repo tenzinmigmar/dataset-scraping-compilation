@@ -1,6 +1,5 @@
 import pytest
 from trustpilot_scraper import TrustPilotScraper
-from trustpilot_scraper import UnsuccessfulRequestError, TooManyPagesRequestedError
 
 def test_review_titles():
     url_test_1 = "instacart.com"
@@ -31,7 +30,4 @@ def test_star_ratings():
     scraper = TrustPilotScraper(url_test, 2)
     assert len(scraper.data["Star Ratings"]) != 0
     assert all(isinstance(x, int) for x in scraper.data["Star Ratings"])
-
-
-
 
